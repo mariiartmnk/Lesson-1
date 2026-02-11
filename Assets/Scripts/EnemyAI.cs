@@ -27,10 +27,13 @@ public class EnemyAI : MonoBehaviour, IDamageable
     float blinkTimer;
     bool blinking;
     SpriteRenderer sprite;
+
+    [System.Obsolete]
     void Awake()
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
         if(playerHealth != null)
         {
