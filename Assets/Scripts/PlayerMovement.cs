@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpSFX);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
 

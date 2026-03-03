@@ -1,21 +1,36 @@
 using UnityEngine;
+using UnityEngine.UI;
 [RequireComponent(typeof(SpriteRenderer))]
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] float maxHealth = 100f;
-    [SerializeField] float invulnerabilityDuration = 1f; 
-    [SerializeField] float blinkInterval = 0.1f;
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float invulnerabilityDuration = 1f; 
+    [SerializeField] private float blinkInterval = 0.1f;
 
-   public float currentHealth;
+    public float currentHealth;
     float invulnerabilityTimer;
-    SpriteRenderer sprite;
+    SpriteRenderer spriteRenderer;
     float blinkTimer;
     bool blinking;
+    public Slider healthSlider;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if(healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+
+    }
     void Awake()
     {
         currentHealth = maxHealth;
-        sprite = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -32,6 +47,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         return false;
 
         currentHealth -= amount;
+
+        if(healthSlider != null)
+            healthSlider.value = currentHealth;
+
         if(currentHealth <= 0f)
         {
             Die();
@@ -56,10 +75,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if(blinkTimer <= 0f)
         {
             blinking = false;
-            sprite.enabled = true;
+            spriteRenderer.enabled = true;
             return;
         }
-        sprite.enabled = Mathf.FloorToInt(blinkTimer/blinkInterval) % 2 == 0;
+        spriteRenderer.enabled = Mathf.FloorToInt(blinkTimer/blinkInterval) % 2 == 0;
     }
     void Die()
     {
